@@ -4,7 +4,7 @@ import "./TargetCredit.sol";
 
 contract Shop {
 
-    address[] public credits;
+    address[] private credits;
 
     address public owner;
     address public ofd;
@@ -46,7 +46,8 @@ contract Shop {
         return ofd;
     }
 
-    function getAllCredits() public view returns (address[] memory) {
+    function getAllCredits(address _address) public view returns (address[] memory) {
+        require(_address == owner);
         return credits;
     }
 

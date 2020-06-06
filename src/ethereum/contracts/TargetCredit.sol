@@ -7,7 +7,7 @@ contract TargetCredit {
     address public fabric;
     address public client;
     address public shop;
-    Product[] public shopBasket;
+    Product[] private shopBasket;
     string  public paper;
     address public bank;
     bool    public isRegisteredInBank;
@@ -132,6 +132,10 @@ contract TargetCredit {
         return (categories, money);
     }
 
+    function getClint() public view returns (address) {
+        return client;
+    }
+
     function getApprovedByClient() public view returns (bool) {
         return isApprovedByClient;
     }
@@ -158,5 +162,28 @@ contract TargetCredit {
 
     function getSelfAddress() public view returns(address) {
         return address(this);
+    }
+
+    function getSummary(address _address) public view returns (
+        address, bool, bool, bool, bool, bool, uint[] memory, uint[] memory
+    ) {
+        require(_address == bank || _address == shop || _address == client );
+        uint[] memory categories = new uint[](shopBasket.length);
+        uint[] memory money = new uint[](shopBasket.length);
+        for (uint i = 0; i < shopBasket.length; i++) {
+            Product storage product = shopBasket[i];
+            categories[i] = product.category;
+            money[i] = product.money;
+        }
+        return (
+        address (this),
+        isRegisteredInBank,
+        isApprovedByClient,
+        isRegisteredInShop,
+        isPaid,
+        isClosed,
+        categories,
+        money
+        );
     }
 }

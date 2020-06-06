@@ -5,11 +5,11 @@ import "./Bank.sol";
 
 contract ContractFabric {
 
-    mapping(address => address[]) public clientsToCredits;
-    address[] public banks;
-    address[] public shops;
-    address[] public ofdList;
-    address[] public fnsList;
+    mapping(address => address[]) private clientsToCredits;
+    address[] private banks;
+    address[] private shops;
+    address[] private ofdList;
+    address[] private fnsList;
 
     function createSmartCredit() public {
         TargetCredit credit = new TargetCredit(msg.sender);

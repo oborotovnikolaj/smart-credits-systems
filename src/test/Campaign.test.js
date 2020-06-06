@@ -1,7 +1,7 @@
 const assert = require('assert');
 const ganache = require('ganache-cli');
 const Web3 = require('web3');
-const options = { gasLimit: 30000000 };
+const options = { gasLimit: 10000000000 };
 const web3 = new Web3(ganache.provider(options));
 
 const bankCompiled = require('../ethereum/build/Bank.json');
@@ -26,7 +26,7 @@ beforeEach(async () => {
 
     fabric = await new web3.eth.Contract(contractFabricCompiled.ContractFabric.abi)
         .deploy({data: contractFabricCompiled.ContractFabric.evm.bytecode.object})
-        .send({from: accounts[0], gas: '30000000'});
+        .send({from: accounts[0], gas: '1000000000'});
 
     //создаем банк
     await fabric.methods
@@ -90,6 +90,8 @@ beforeEach(async () => {
         shopCompiled.Shop.abi,
         addressShop
     );
+
+    // настрйки
 
     await shop.methods
         .setOfd(ofd.options.address)
@@ -195,7 +197,7 @@ describe('SmartCreditProject', () => {
 
     it('registration of credit in bank', async () => {
         assert.equal(await credit.methods.getRegisteredInBank().call(), false);
-        assert.deepEqual(await bank.methods.getAllCredits().call(), []);
+        assert.deepEqual(await bank.methods.getAllCredits(accounts[0]).call(), []);
 
         await credit.methods
             .registerInBank()
@@ -205,7 +207,7 @@ describe('SmartCreditProject', () => {
             });
 
         assert.equal(await credit.methods.getRegisteredInBank().call(), true);
-        assert.deepEqual(await bank.methods.getAllCredits().call(), [credit.options.address]);
+        assert.deepEqual(await bank.methods.getAllCredits(accounts[0]).call(), [credit.options.address]);
     });
 
     it('approve of credit by bank owner', async () => {
@@ -278,7 +280,7 @@ describe('SmartCreditProject', () => {
             });
 
         assert.equal(await credit.methods.getRegisteredInShop().call(), false);
-        assert.deepEqual(await shop.methods.getAllCredits().call(), [])
+        assert.deepEqual(await shop.methods.getAllCredits(accounts[0]).call(), [])
 
         await credit.methods
             .registerInShop()
@@ -288,7 +290,7 @@ describe('SmartCreditProject', () => {
             });
 
         assert.equal(await credit.methods.getRegisteredInShop().call(), true);
-        assert.deepEqual(await shop.methods.getAllCredits().call(), [credit.options.address])
+        assert.deepEqual(await shop.methods.getAllCredits(accounts[0]).call(), [credit.options.address])
     });
 
     it('approve of credit by shop owner', async () => {

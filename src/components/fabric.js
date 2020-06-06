@@ -4,14 +4,12 @@ import shop from "../ethereum/connections/shop";
 import bank from "../ethereum/connections/bank";
 import ofd from "../ethereum/connections/ofd";
 import fns from "../ethereum/connections/fns";
-import fabric from "../ethereum/connections/fabric";
 
 import Layout from '../components/Layout';
 import {Link} from 'react-router-dom';
-import {fetchData, fetchCredit} from "../actions";
+import {fetchData} from "../actions";
 import {connect} from "react-redux";
 import {BLOCKCHAIN_DATA} from "../Constants";
-import _web3 from "../ethereum/web3";
 
 class SmartContractFabric extends Component {
 
@@ -54,16 +52,6 @@ class SmartContractFabric extends Component {
         )
     };
 
-    fetchCreditsPPP = async () => {
-        console.log("shit");
-        const accounts = await _web3.eth.getAccounts();
-        const credits = await fabric.methods.getCredits().call();
-        console.log(credits);
-        console.log(accounts);
-        this.props.fetchCredit();
-    };
-
-
     render() {
         return (
             <Layout>
@@ -92,11 +80,6 @@ class SmartContractFabric extends Component {
                     {this.renderCreateButton("credits", "credit")}
                     {this.renderListOfItems("credits", "credit")}
                 </div>
-
-                <div>
-                    <Button  onClick={this.fetchCreditsPPP}>Fetch credits</Button>
-                </div>
-
             </Layout>
         );
     }
@@ -109,4 +92,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, {fetchData, fetchCredit})(SmartContractFabric);
+export default connect(mapStateToProps, {fetchData})(SmartContractFabric);

@@ -1,7 +1,9 @@
 import fabric from "../ethereum/connections/fabric";
 import history from "../history";
-import {FETCH_CREDITS, FETCH_DATA} from "./types";
+import {FETCH_BANK_DATA, FETCH_CREDITS, FETCH_DATA} from "./types";
 import _web3 from "../ethereum/web3";
+import bank from "../ethereum/connections/bank";
+import targetCredit from "../ethereum/connections/targetCredit";
 
 
 export const fetchData = () =>  async dispatch => {
@@ -21,13 +23,23 @@ export const fetchData = () =>  async dispatch => {
     history.push('/');
 };
 
-export const fetchCredit = () =>  async dispatch => {
+
+export const fetchBankCredits = (addressBank) =>  async dispatch => {
     const accounts = await _web3.eth.getAccounts();
-    const credits = await fabric.methods.getCredits().call();
-    console.log("fetchData");
-    console.log("accounts");
     console.log(accounts);
-    console.log({ credits });
-    dispatch({ type: FETCH_CREDITS, payload: { credits } });
-    history.push('/');
+    const credits = await bank(addressBank).methods.getAllCredits(accounts[0]).call();
+    console.log("fetchBankCredits");
+    console.log(credits);
+
+    const creditsInfo = await Promise.all(
+        Array(parseInt(credits.length))
+            .fill()
+            .map((element, index) => {
+                return targetCredit(credits[index]).methods.getSummary(accounts[0]).call();
+            })
+    );
+    console.log("creditsInfo");
+    console.log(creditsInfo);
+    console.log({ type: FETCH_BANK_DATA, payload: creditsInfo});
+    dispatch({ type: FETCH_BANK_DATA, payload: creditsInfo});
 };

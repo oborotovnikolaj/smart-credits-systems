@@ -6,12 +6,12 @@ import "./Bill.sol";
 
 contract Ofd {
 
-    address public owner;
-    address public fns;
-    address public contractFabric;
+    address private owner;
+    address private fns;
+    address private contractFabric;
 
-    mapping(address => bool) shops;
-    address[] credits;
+    mapping(address => bool) private shops;
+    address[] private credits;
 
     constructor (address _owner) public {
         contractFabric = msg.sender;

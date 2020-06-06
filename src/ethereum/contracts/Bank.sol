@@ -7,7 +7,7 @@ contract Bank {
     address public owner;
     address public contractFabric;
 
-    address[] public credits;
+    address[] private credits;
 
     constructor (address _owner) public {
         owner = _owner;
@@ -51,7 +51,8 @@ contract Bank {
         credit.close();
     }
 
-    function getAllCredits() public view returns (address[] memory) {
+    function getAllCredits(address _address) public view returns (address[] memory) {
+        require(_address == owner);
         return credits;
     }
 

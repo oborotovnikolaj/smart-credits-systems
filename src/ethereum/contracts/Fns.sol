@@ -5,8 +5,8 @@ contract Fns {
     address public owner;
     address public contractFabric;
 
-    mapping(address => bool) public registeredOfd;
-    mapping(address => bool) public creditRegistered;
+    mapping(address => bool) private registeredOfd;
+    mapping(address => bool) private creditRegistered;
 
     constructor (address _owner) public {
         contractFabric = msg.sender;

@@ -2,10 +2,10 @@ pragma solidity >=0.5.0 <0.7.0;
 
 contract Bill {
 
-    address public ofd;
-    address public fns;
-    address public credit;
-    bool public isProcessedByFns;
+    address private ofd;
+    address private fns;
+    address private credit;
+    bool private isProcessedByFns;
 
 
     constructor (address creditP, address fnsP) public {
