@@ -58,8 +58,8 @@ contract ContractFabric {
         return fnsList;
     }
 
-    function getCredits() public view returns(address[] memory){
-        return clientsToCredits[msg.sender];
+    function getCredits(address myAddress) public view returns(address[] memory){
+        return clientsToCredits[myAddress];
     }
 
     function getSelfAddress() public view returns(address) {

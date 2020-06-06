@@ -5,6 +5,7 @@ import Layout from '../../components/Layout';
 import web3 from '../../ethereum/web3';
 import {connect} from "react-redux";
 import {fetchData} from "../../actions";
+import {BLOCKCHAIN_DATA} from "../../Constants";
 
 
 class FnsNew extends Component {
@@ -51,4 +52,10 @@ class FnsNew extends Component {
     }
 }
 
-export default connect({}, {fetchData})(FnsNew);
+const mapStateToProps = (state) => {
+    return {
+        blockChainData: state.fabricReducer[BLOCKCHAIN_DATA]
+    };
+};
+
+export default connect(mapStateToProps, {fetchData})(FnsNew);

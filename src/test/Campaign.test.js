@@ -126,7 +126,7 @@ beforeEach(async () => {
             gas: '3000000'
         });
 
-    [addressCredit] = await fabric.methods.getCredits().call();
+    [addressCredit] = await fabric.methods.getCredits(accounts[0]).call();
 
     credit = await new web3.eth.Contract(
         targetCreditCompiled.TargetCredit.abi,
@@ -185,7 +185,7 @@ describe('SmartCreditProject', () => {
         let actualFns = await ofd.methods.getFns().call();
         assert.equal(actualFns, fns.options.address);
 
-        let actualCredits = await fabric.methods.getCredits().call();
+        let actualCredits = await fabric.methods.getCredits(accounts[0]).call();
         assert.deepEqual(actualCredits, [credit.options.address]);
 
         let expectedShopBasket = {'0': ['2', '3'], '1': ['100', '500']};

@@ -10,7 +10,7 @@ export const fetchData = () =>  async dispatch => {
     console.log(accounts);
 
 
-    const credits = await fabric.methods.getCredits().call();
+    const credits = await fabric.methods.getCredits(accounts[0]).call();
     const banks = await fabric.methods.getBanks().call();
     const shops = await fabric.methods.getShops().call();
     const ofdList = await fabric.methods.getOfdList().call();
