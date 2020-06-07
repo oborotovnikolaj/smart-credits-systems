@@ -1,10 +1,11 @@
 import * as React from "react";
 import {Link} from "react-router-dom";
-import {Button, Card} from "semantic-ui-react";
+import {Button, Table} from "semantic-ui-react";
 import Layout from "../Layout";
 import {BLOCKCHAIN_DATA} from "../../Constants";
 import {connect} from "react-redux";
-import {fetchBankCredits, fetchData} from "../../actions";
+import {fetchBankCredits} from "../../actions";
+import SmartCreditRawInBank from "./SmartCreditRawInBank";
 
 class ShowBank extends React.Component {
 
@@ -12,45 +13,53 @@ class ShowBank extends React.Component {
         this.props.fetchBankCredits(this.props.match.params.id);
     }
 
-    renderListOfItems = (itemName, linkName) => {
-        console.log(this.props.bankReducer);
+    renderRows() {
         if (!!!this.props.bankReducer) {
             return;
         }
-        const items = this.props.bankReducer.map(el => {
-            return {
-                header: el.address,
-                description: (
-                    <Link to={`/${linkName}/${el.address}`}>
-                        <a>View {linkName}</a>
-                    </Link>
-                ),
-                fluid: true
-            };
+        return this.props.bankReducer.map((creditInfo, index) => {
+            return (
+                <SmartCreditRawInBank
+                    key={index}
+                    id={index}
+                    creditInfo={creditInfo}
+                    bankAddress={this.props.match.params.id}
+                />
+            );
         });
-
-        return <Card.Group items={items}/>
-    };
-
+    }
 
     render() {
-        return (
-            <div>
-                <div>
-                    <h3>Registred credits</h3>
-                    {this.renderListOfItems("credits", "credit")}
-                </div>
-            </div>
+        const { Header, Row, HeaderCell, Body } = Table;
 
-        )
+        return (
+            <Layout>
+                <h3>Registered credits</h3>
+                <Table>
+                    <Header>
+                        <Row>
+                            <HeaderCell>address</HeaderCell>
+                            <HeaderCell>approvedByBank</HeaderCell>
+                            <HeaderCell>approvedByClient</HeaderCell>
+                            <HeaderCell>isPaid</HeaderCell>
+                            <HeaderCell>isClosed</HeaderCell>
+                            <HeaderCell>Approve</HeaderCell>
+                            <HeaderCell>Close</HeaderCell>
+                        </Row>
+                    </Header>
+                    <Body>{this.renderRows()}</Body>
+                </Table>
+                <div>Found {this.props.bankReducer.length} credits.</div>
+            </Layout>
+        );
     }
+
 }
 
 const mapStateToProps = (state) => {
     return {
         blockChainData: state.fabricReducer[BLOCKCHAIN_DATA],
-        bankReducerList: Object.values(state.bankReducer),
-        bankReducer: Object.values(state.bankReducer)
+        bankReducer: Object.values(state.bankReducer),
     };
 };
 

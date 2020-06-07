@@ -4,8 +4,8 @@ import {APPROVE_CREDIT_BY_BANK, CLOSE_CREDIT_BY_BANK, FETCH_BANK_DATA, PAY_CREDI
 export default (state ={}, action) => {
     switch (action.type) {
         case FETCH_BANK_DATA:
-            // return { ...state, [FETCH_BANK_DATA]: _.mapKeys(action.payload, 'address')  };
-            return { ...state,  ..._.mapKeys(action.payload, '0')  };
+            return { ...state,  ..._.mapKeys(action.payload, 'address')  };
+            // return { ...state,  ..._.mapKeys(action.payload, '0')  };
         case APPROVE_CREDIT_BY_BANK:
             return { ...state, [action.payload.address]: {...action.payload }};
         case PAY_CREDIT_BY_BANK:

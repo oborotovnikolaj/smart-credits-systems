@@ -31,6 +31,8 @@ export const fetchBankCredits = (addressBank) =>  async dispatch => {
     console.log("fetchBankCredits");
     console.log(credits);
 
+    console.log(await targetCredit(credits[1]).methods.getSummary(accounts[0]).call());
+
     const creditsInfo = await Promise.all(
         Array(parseInt(credits.length))
             .fill()
@@ -38,8 +40,14 @@ export const fetchBankCredits = (addressBank) =>  async dispatch => {
                 return targetCredit(credits[index]).methods.getSummary(accounts[0]).call();
             })
     );
+
+    const creditsInfoObj =
+        // creditsInfo.map(el => {return {address: el[0], regInBank: el[1], approvedByClient: el[2], regInShop: el[3], isPaid: el[4], isClosed: el[5], category: el[6], money: el[7] }});
+        creditsInfo.map(el => {return {address: el[0], regInBank: el[1], approvedByBank: el[2], approvedByClient: el[3], regInShop: el[4], isPaid: el[5], isClosed: el[6], category: el[7], money: el[8] }});
+
     console.log("creditsInfo");
     console.log(creditsInfo);
-    console.log({ type: FETCH_BANK_DATA, payload: creditsInfo});
-    dispatch({ type: FETCH_BANK_DATA, payload: creditsInfo});
+    console.log(creditsInfoObj);
+    // dispatch({ type: FETCH_BANK_DATA, payload: creditsInfo});
+    dispatch({ type: FETCH_BANK_DATA, payload: creditsInfoObj});
 };

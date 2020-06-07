@@ -387,6 +387,12 @@ describe('SmartCreditProject', () => {
                 gas: '3000000'
             });
 
+        const p = await credit.methods
+            .getSummary(accounts[0])
+            .call();
+
+        console.log(p);
+
         assert.equal(await credit.methods.getClosed().call(), true);
     });
 });

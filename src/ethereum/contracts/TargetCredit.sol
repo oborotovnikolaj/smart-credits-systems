@@ -11,6 +11,7 @@ contract TargetCredit {
     string  public paper;
     address public bank;
     bool    public isRegisteredInBank;
+    bool    public isApprovedByBank;
     bool    public isApprovedByClient;
     bool    public isRegisteredInShop;
     bool    public isPaid;
@@ -27,6 +28,7 @@ contract TargetCredit {
     constructor(address _client) public {
         fabric = msg.sender;
         client = _client;
+        isApprovedByBank = false;
         isApprovedByClient = false;
         isRegisteredInBank = false;
         isRegisteredInShop = false;
@@ -102,8 +104,9 @@ contract TargetCredit {
         shop = _shop;
     }
 
-    function setPaper(string memory _paper) public {
+    function approveByBank(string memory _paper) public {
         require(msg.sender == bank);
+        isApprovedByBank = true;
         paper = _paper;
     }
 
@@ -136,6 +139,10 @@ contract TargetCredit {
         return client;
     }
 
+    function getApprovedByBank() public view returns (bool) {
+        return isApprovedByBank;
+    }
+
     function getApprovedByClient() public view returns (bool) {
         return isApprovedByClient;
     }
@@ -165,7 +172,8 @@ contract TargetCredit {
     }
 
     function getSummary(address _address) public view returns (
-        address, bool, bool, bool, bool, bool, uint[] memory, uint[] memory
+        address, bool, bool, bool, bool, bool, bool, uint[] memory, uint[] memory
+//        address, bool, bool, bool, bool, bool, uint[] memory, uint[] memory
     ) {
         require(_address == bank || _address == shop || _address == client );
         uint[] memory categories = new uint[](shopBasket.length);
@@ -178,6 +186,7 @@ contract TargetCredit {
         return (
         address (this),
         isRegisteredInBank,
+        isApprovedByBank,
         isApprovedByClient,
         isRegisteredInShop,
         isPaid,

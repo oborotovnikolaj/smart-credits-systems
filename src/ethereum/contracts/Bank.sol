@@ -27,7 +27,7 @@ contract Bank {
         require(credit.getBank() == address(this));
         require(credit.getRegisteredInBank());
         require(!credit.getApprovedByClient());
-        credit.setPaper(_paper);
+        credit.approveByBank(_paper);
     }
 
     function closePayment() public {
