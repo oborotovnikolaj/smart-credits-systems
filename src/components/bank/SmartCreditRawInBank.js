@@ -34,6 +34,7 @@ class SmartCreditRawInBank extends Component {
         }
 
         this.setState({loadingApprove: false});
+        this.props.fetchBankCredits(this.props.bankAddress);
     };
 
     onClose = async () => {
@@ -42,10 +43,8 @@ class SmartCreditRawInBank extends Component {
 
         try {
             const {creditInfo} = this.props;
-            const bank = bank(this.props.bankAddress);
-
             const accounts = await _web3.eth.getAccounts();
-            await bank.methods.closeCredit(creditInfo.address).send({
+            await  bank(this.props.bankAddress).methods.closeCredit(creditInfo.address).send({
                 from: accounts[0]
             });
             this.props.fetchBankCredits(this.props.bankAddress);
@@ -54,6 +53,7 @@ class SmartCreditRawInBank extends Component {
         }
 
         this.setState({loadingClose: false});
+        this.props.fetchBankCredits(this.props.bankAddress);
     };
 
     render() {

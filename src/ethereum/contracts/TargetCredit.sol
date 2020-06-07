@@ -96,11 +96,13 @@ contract TargetCredit {
 
     function setBank(address _bank) public {
         require(msg.sender == client);
+        require(!isRegisteredInBank);
         bank = _bank;
     }
 
     function setShop(address _shop) public {
         require(msg.sender == client);
+        require(!isRegisteredInBank);
         shop = _shop;
     }
 
@@ -172,7 +174,7 @@ contract TargetCredit {
     }
 
     function getSummary(address _address) public view returns (
-        address, bool, bool, bool, bool, bool, bool, uint[] memory, uint[] memory
+        address, address, address, bool, bool, bool, bool, bool, bool, uint[] memory, uint[] memory
 //        address, bool, bool, bool, bool, bool, uint[] memory, uint[] memory
     ) {
         require(_address == bank || _address == shop || _address == client );
@@ -185,6 +187,8 @@ contract TargetCredit {
         }
         return (
         address (this),
+        bank,
+        shop,
         isRegisteredInBank,
         isApprovedByBank,
         isApprovedByClient,
