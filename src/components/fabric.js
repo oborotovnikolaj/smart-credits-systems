@@ -19,10 +19,13 @@ class SmartContractFabric extends Component {
 
     renderListOfItems = (itemName, linkName) => {
         console.log(this.props.blockChainData);
-        if (!!!this.props.blockChainData) {
-            return ;
+        if (!!!this.props.blockChainData || this.props.blockChainData[itemName].length === 0) {
+            return <div>EMPTY</div>;
         }
         const items = this.props.blockChainData[itemName].map(address => {
+            if (!address) {
+                return <div>EMPTY</div>;
+            }
             return {
                 header: address,
                 description: (
@@ -42,8 +45,9 @@ class SmartContractFabric extends Component {
             <Link to={`/${linkName}/new`}>
                 <a>
                     <Button
+                        size={"big"}
                         floated="right"
-                        content={"Create " + linkName}
+                        content={"Create"}
                         icon="add circle"
                         primary
                     />
@@ -60,21 +64,25 @@ class SmartContractFabric extends Component {
                     {this.renderCreateButton("banks", "bank")}
                     {this.renderListOfItems("banks", "bank")}
                 </div>
+                <span>&nbsp;&nbsp;</span>
                 <div>
                     <h3>Open Shops</h3>
                     {this.renderCreateButton("shops", "shop")}
                     {this.renderListOfItems("shops", "shop")}
                 </div>
+                <span>&nbsp;&nbsp;</span>
                 <div>
                     <h3>Open Ofd</h3>
                     {this.renderCreateButton("ofdList", "ofd")}
                     {this.renderListOfItems("ofdList", "ofd")}
                 </div>
+                <span>&nbsp;&nbsp;</span>
                 <div>
                     <h3>Open fns</h3>
                     {this.renderCreateButton("fnsList", "fns")}
                     {this.renderListOfItems("fnsList", "fns")}
                 </div>
+                <span>&nbsp;&nbsp;</span>
                 <div>
                     <h3>Open credits</h3>
                     {this.renderCreateButton("credits", "credit")}

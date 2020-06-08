@@ -70,6 +70,7 @@ class ShowShop extends React.Component {
 
         return (
             <Layout>
+                <h2>Active Shop {this.props.match.params.id}</h2>
                 <h3>Registered credits</h3>
                 <Table>
                     <Header>

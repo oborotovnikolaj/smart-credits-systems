@@ -34,6 +34,7 @@ class ShowBank extends React.Component {
 
         return (
             <Layout>
+                <h2>Active bank {this.props.match.params.id}</h2>
                 <h3>Registered credits</h3>
                 <Table>
                     <Header>

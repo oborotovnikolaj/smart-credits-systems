@@ -83,7 +83,7 @@ class ShowCredit extends React.Component {
 
         return (
             <Layout>
-                <h3>Active credit {this.props.match.params.id}</h3>
+                <h2>Active credit {this.props.match.params.id}</h2>
                 <Table>
                     <Header>
                         <Row>

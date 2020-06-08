@@ -12,6 +12,7 @@ import ShowBank from "./bank/show";
 import ShowCredit from "./credit/show";
 import ShowShop from "./shop/show";
 import ShowOfd from "./ofd/show";
+import ShowFns from "./fns/show";
 
 class App extends React.Component {
     render() {
@@ -29,7 +30,7 @@ class App extends React.Component {
                             <Route path={"/ofd/new"} exact component={OfdNew}/>
                             <Route path={"/ofd/:id"} exact component={ShowOfd}/>
                             <Route path={"/fns/new"} exact component={FnsNew}/>
-                            {/*<Route path={"/fns/:id"} exact component={}/>*/}
+                            <Route path={"/fns/:id"} exact component={ShowFns}/>
                             <Route path={"/credit/new"} exact component={CreditNew}/>
                             <Route path={"/credit/:id"} exact component={ShowCredit}/>
                         </Switch>

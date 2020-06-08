@@ -13,6 +13,9 @@ class ShowOfd extends React.Component {
         valueFns: '',
         loadingFns: false,
         errorMessageFns: '',
+        valueAddShop: '',
+        loadingAddShop: false,
+        errorMessageAddShop: '',
     };
 
     componentDidMount() {
@@ -38,10 +41,29 @@ class ShowOfd extends React.Component {
         this.props.fetchOfd(this.props.match.params.id);
     };
 
+    onAddShop = async event => {
+        event.preventDefault();
+        const { valueAddShop } = this.state;
+
+        this.setState({ loadingAddShop: true, errorMessageAddShop: '' });
+
+        try {
+            const accounts = await _web3.eth.getAccounts();
+            await ofd(this.props.match.params.id).methods
+                .addShop(valueAddShop)
+                .send({ from: accounts[0] });
+        } catch (err) {
+            this.setState({ errorMessageAddShop: err.message });
+        }
+
+        this.setState({ loadingAddShop: false });
+        this.props.fetchOfd(this.props.match.params.id);
+    };
+
     render() {
         return (
             <Layout>
-                <h3>Active ofd {this.props.match.params.id}</h3>
+                <h2>Active ofd {this.props.match.params.id}</h2>
 
                 <Form onSubmit={this.onSubmitFns} error={!!this.state.errorMessageFns}>
                     <Form.Field>
@@ -54,6 +76,21 @@ class ShowOfd extends React.Component {
                     </Form.Field>
                     <Message error header="Oops!" content={this.state.errorMessageFns} />
                     <Button primary loading={this.state.loadingFns}>
+                        Set
+                    </Button>
+                </Form>
+
+                <Form onSubmit={this.onAddShop} error={!!this.state.errorMessageAddShop}>
+                    <Form.Field>
+                        <label>Add Shop</label>
+                        <Input
+                            value={this.state.valueAddShop}
+                            onChange={event =>
+                                this.setState({ valueAddShop: event.target.value })}
+                        />
+                    </Form.Field>
+                    <Message error header="Oops!" content={this.state.errorMessageAddShop} />
+                    <Button primary loading={this.state.loadingAddShop}>
                         Set
                     </Button>
                 </Form>
